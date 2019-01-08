@@ -5,6 +5,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    loadProperties("signature")
+    signingConfigs {
+        signature {
+            keyAlias signatureProperties.keyAlias
+            keyPassword signatureProperties.keyPassword
+            storeFile file(signatureProperties.storeFile)
+            storePassword signatureProperties.storePassword
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "allancslima.circleci.sample"
@@ -30,4 +40,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+def loadProperties(propertyName) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("${propertyName}.properties").newDataInputStream())
+    ext."${propertyName}Properties" = properties
 }

@@ -82,7 +82,7 @@ gen-external-apklibs
 .gradle
 
 # Signing files
-.signing/
+signature.properties
 
 # Local configuration file (sdk path, etc)
 
