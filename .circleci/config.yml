@@ -11,6 +11,9 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Decrypt release key
+          command: openssl aes-256-cbc -d -in distribution/signature.keystore-encrypted -out distribution/signature.keystore -md sha256 -k $DECRYPT_KEY
+      - run:
          name: Chmod permissions # if permission for Gradlew Dependencies fail, use this.
          command: sudo chmod +x ./gradlew
       - run:

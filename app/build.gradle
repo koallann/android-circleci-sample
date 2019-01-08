@@ -5,6 +5,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        signature {
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file("$rootDir/distribution/signature.keystore")
+            storePassword System.getenv("STORE_PASSWORD")
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "allancslima.circleci.sample"
@@ -15,9 +24,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.signature
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signature
         }
     }
 }
